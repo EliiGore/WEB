@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script>
+        window.addEventListener('load', function () {
+            function eliminarDatos(){
+                localStorage.clear(); 
+                document.getElementById('salida').innerHTML = 'borrado' ;
+                
+            }
+            function darMensjGuardado(){
+                document.getElementById('nombre').value = ''; 
+                document.getElementById('salida').innerHTML = 'Guardado'
+            }
+            function sitear(asitear){
+                localStorage.setItem('Nombre', asitear);
+            }
+            function retornoArreglo(){
+                var html = localStorage.getItem('Nombre'), arreglo = html.split(",");
+                return arreglo;
+            }
+            document.getElementById('borrar').addEventListener('click', function () { 
+                eliminarDatos();
+            });
+            document.getElementById('guardar').addEventListener('click', function () {
+                var nombre = new Array();
+                if (localStorage.length > 0) { nombre.push(localStorage.getItem('Nombre')); }
+                nombre.push(document.getElementById('nombre').value);
+                sitear(nombre);
+                darMensjGuardado();
+            });
+            document.getElementById('mostrar').addEventListener('click', function () {
+                document.getElementById('salida').innerHTML = '';
+                var html = localStorage.getItem('Nombre'), arreglo = html.split(",");
+                for (var i = 0; i < arreglo.length; i++) { document.getElementById('salida').innerHTML += arreglo[i] + '<br>'; }
+            });
+            document.getElementById('busqueda').addEventListener('click',function(){
+                var buscar=document.getElementById('textoBuscar').value;
+                
+                for(var i=0; i<retornoArreglo().length;i++){
+                    if(buscar==arreglo[i]){
+                        document.getElementById('salida').innerHTML=arreglo[i];
+                    }
+                }
+            });
+            document.getElementById('eliminacion').addEventListener('click',function(){
+                var buscar=document.getElementById('textoBuscar').value;
+                var html = localStorage.getItem('Nombre'), arreglo = html.split(",");
+                for(var i=0; i<arreglo.length;i++){
+                    if(buscar==arreglo[i]){
+                        arreglo.splice(i,1);
+                         eliminarDatos();
+                         localStorage.setItem('Nombre',arreglo)
+                         for(var j=0; j<arreglo.length;j++){
+                                document.getElementById('salida').innerHTML+=arreglo[j];
+                        }
+                    }
+                }
+            });
+            document.getElementById('eliminarpornum').addEventListener('click',function(){
+                var numescogido=document.getElementById('textoBuscar').value;
+                var html = localStorage.getItem('Nombre'), arreglo = html.split(",");
+                 document.getElementById('salida').innerHTML='escojiste '+arreglo[numescogido];
+            });
+        });
+    </script>
+</head>
+<body>
+    <input type="text" id="nombre" />
+    <button id="guardar">Guardar</button>
+    <button id="mostrar">Mostrar</button>
+    <button id="borrar">Borrar</button>
+    <input type="text" id="textoBuscar"/>
+    <button id="busqueda">Buscar</button>
+    <button id="eliminacion">Eliminar</button>
+    <button id="eliminarpornum">Eliminacion x #</button>
+    <div id="salida"></div>
+</body>
+</html>
